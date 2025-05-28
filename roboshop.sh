@@ -22,10 +22,11 @@ then
    echo  "$2 is success..." | tee -a $LOG_FILE
 else
    echo "$2  is not success..." | tee -a $LOG_FILE
+   exit 1
 fi
 }
 
-cp mongo.repo /etc/yum.repos/mongo.repo 
+cp mongo.repo /etc/yum.repos.d/mongod.repo 
 VALIDATE $? "copying mongodb repo"
 
 dnf install mongodb-org -y &>>$LOG_FILE
