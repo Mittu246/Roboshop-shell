@@ -22,7 +22,7 @@ if [ $1 -eq 0 ]
 then
    echo "$2 is success" | tee -a $LOG_FILE
 else
-   echo "$2 is not success" | tee -A $LOG_FILE
+   echo "$2 is not success" | tee -a $LOG_FILE
    exit 1
 fi
 }
@@ -35,8 +35,14 @@ VALIDATE $? "disable"
 dnf module enable nodejs:20 -y
 VALIDATE $? "enable"
 
-useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
-VALIDATE $? "useradd"
+id roboshop
+if [ $? -ne 0 ]
+then
+    echo "useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop"
+    VALIDATE $? "useradd"
+else 
+    echo -e "system user is already created"
+fi
 
 mkdir -p /app
 VALIDATE $? "directory"
